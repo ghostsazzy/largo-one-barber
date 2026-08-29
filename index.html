@@ -309,7 +309,10 @@
       <div class="eyebrow">Book a visit</div>
       <h2>Request an appointment</h2>
     </div>
-    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+    <form id="bookingForm" action="https://formspree.io/f/maeyyran" method="POST">
+      <div id="formSuccess" style="display:none;background:rgba(192,138,46,0.12);border:1px solid var(--gold);border-radius:4px;padding:16px 18px;margin-bottom:20px;color:var(--cream);">
+        Thanks — your request was sent. We'll get back to you shortly, or call us at <a href="tel:+13018080073" style="color:var(--gold);">(301) 808-0073</a>.
+      </div>
       <div class="form-grid">
         <div><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" required></div>
         <div><label for="phone">Phone</label><input id="phone" name="phone" type="tel" placeholder="(301) 555-0100" required></div>
@@ -325,10 +328,35 @@
       <div class="cta-row" style="margin-top:20px;">
         <button class="btn btn-primary" type="submit">Send request</button>
       </div>
-      <p class="form-note">Replace YOUR_FORM_ID with a real Formspree endpoint before launch to receive submissions by email.</p>
+      <p class="form-note">We typically respond within one business day.</p>
     </form>
   </div>
 </section>
+
+<script>
+  const bookingForm = document.getElementById('bookingForm');
+  const formSuccess = document.getElementById('formSuccess');
+  bookingForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const data = new FormData(bookingForm);
+    try {
+      const response = await fetch(bookingForm.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (response.ok) {
+        formSuccess.style.display = 'block';
+        bookingForm.reset();
+        formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        alert('Something went wrong sending your request — please call us instead at (301) 808-0073.');
+      }
+    } catch (err) {
+      alert('Something went wrong sending your request — please call us instead at (301) 808-0073.');
+    }
+  });
+</script>
 
 <footer>
   <div class="wrap">
